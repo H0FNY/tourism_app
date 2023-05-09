@@ -1,16 +1,15 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:tourism/Constants/constants.dart';
-import 'package:tourism/login/Register.dart';
+import 'package:tourism/screens/Register.dart';
 import 'package:tourism/componant/componant.dart';
 
 class Login extends StatelessWidget {
   static String id = "Login";
   bool hide = true;
-  double width = 0;
-
-  double height = 0;
-
+  double width = 0,height = 0;
+  String email="",password="";
   final emailController = TextEditingController();
 
   final passwordController = TextEditingController();
@@ -78,6 +77,7 @@ class Login extends StatelessWidget {
                   validator: (value){
                     if (value!.isEmpty)
                       return "please enter your Email";
+                    else if (emailValid.hasMatch(emailController.toString()))return "Enter valid Email";
                   }
                 ),
                 SizedBox(
@@ -132,7 +132,7 @@ class Login extends StatelessWidget {
                     ),
                     onPressed: () {
                       if (formKey.currentState!.validate()) {
-                        navigate(context: context, PageName: Login.id);
+
                       }
                     },
                     child: Text(
@@ -180,6 +180,13 @@ class Login extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+  Future<void> loginuser()  async{
+    UserCredential user =
+    await FirebaseAuth.instance.signInWithEmailAndPassword(
+      email: email,
+      password: password,
     );
   }
 }

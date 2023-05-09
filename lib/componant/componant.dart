@@ -5,6 +5,7 @@ import 'package:tourism/Constants/constants.dart';
 Widget TextForm({
   String? Function(String?)? validator,
   TextEditingController? controller,
+  void Function(String)? onchange,
   TextInputType Type = TextInputType.text,
   bool hide = false,
   Icon? prefxicon,
@@ -12,6 +13,7 @@ Widget TextForm({
   String? hinttext,
 }) =>
     TextFormField(
+      onChanged: onchange,
       controller: controller,
       keyboardType: Type,
       obscureText: hide,
@@ -67,4 +69,25 @@ Future navigate({
   required String PageName,
 }) {
   return Navigator.pushNamed(context,PageName );
+}
+
+
+void showsnakebar(BuildContext context, String messege) {
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      backgroundColor: Colors.white,
+      padding: const EdgeInsets.all(20),
+      duration: const Duration(milliseconds: 1500),
+      behavior: SnackBarBehavior.floating,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+      content: Text(
+        messege,
+        style: const TextStyle(
+          color: Colors.black,
+        ),
+      ),
+    ),
+  );
 }
