@@ -14,6 +14,7 @@ class Home extends StatelessWidget {
           }, icon: Icon(Icons.logout)),
         ],
       ),
+      bottomNavigationBar: ,
     );
   }
   signUserOut(){

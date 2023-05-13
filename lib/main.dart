@@ -6,6 +6,7 @@ import 'package:tourism/screens/Login.dart';
 import 'package:tourism/screens/Register.dart';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:tourism/screens/auth_screen.dart';
+import 'package:tourism/screens/verification_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -37,7 +38,7 @@ class MyApp extends StatelessWidget {
               centered: false,
               backgroundColor:  Color(0xff364958),
               splash: Image.asset('assets/images/Group 1.png'),
-              nextScreen: Authpage(),
+              nextScreen: Verif(),
             );
           }
         ),
