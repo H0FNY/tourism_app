@@ -2,6 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tourism/Constants/constants.dart';
 
+import '../models/message_model.dart';
+
+
 Widget TextForm({
   String? Function(String?)? validator,
   TextEditingController? controller,
@@ -72,7 +75,7 @@ Future navigate({
 }
 
 
-void showsnakebar(BuildContext context, String messege) {
+void showSnackBar(BuildContext context, String messege) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       backgroundColor: Colors.white,
@@ -91,3 +94,49 @@ void showsnakebar(BuildContext context, String messege) {
     ),
   );
 }
+
+Widget ChatBuble(MessageDataModel message) => Align(
+  alignment: Alignment.centerLeft,
+  child: Container(
+    margin: const EdgeInsets.only(left: 18, right: 18, top: 15),
+    padding:
+    const EdgeInsets.only(right: 15, left: 18, top: 15, bottom: 15),
+    decoration: const BoxDecoration(
+        color: Color(0xff2B475E),
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(20),
+          topRight: Radius.circular(20),
+          bottomRight: Radius.circular(20),
+        )),
+    child: Text(
+      message.message,
+      style: TextStyle(
+        color: Colors.white,
+        fontSize: 16,
+      ),
+    ),
+  ),
+);
+
+Widget ChatBubleforfriend(MessageDataModel message) => Align(
+  alignment: Alignment.centerRight,
+  child: Container(
+    margin: const EdgeInsets.only(left: 18, right: 18, top: 15),
+    padding:
+    const EdgeInsets.only(right: 15, left: 18, top: 15, bottom: 15),
+    decoration: const BoxDecoration(
+        color: Color(0xff2B2270),
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(20),
+          topRight: Radius.circular(20),
+          bottomLeft: Radius.circular(20),
+        )),
+    child: Text(
+      message.message,
+      style: TextStyle(
+        color: Colors.white,
+        fontSize: 16,
+      ),
+    ),
+  ),
+);

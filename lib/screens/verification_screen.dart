@@ -6,7 +6,7 @@ import 'package:tourism/componant/componant.dart';
 class Verif extends StatelessWidget {
   Verif({Key? key}) : super(key: key);
   double width = 0, height = 0;
-
+  static String id ="Verf";
   @override
   Widget build(BuildContext context) {
     width = MediaQuery.of(context).size.width;
@@ -18,39 +18,28 @@ class Verif extends StatelessWidget {
           children: [
             ClipPath(
               clipper: Customshape(),
-              child: Stack(
-                children: [
-                  Positioned(
-                    child: Container(
-                      color: SecondaryColor,
-                      height: height / 4,
-                      width: width,
-                      child: Stack(
-                        clipBehavior: Clip.none,
-                        children: [
-                          Positioned(
-                            child: Text(
-                              'Verification Code',
-                              style: TextStyle(
-                                fontSize: width / 15,
-                                color: MainColor,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: "Poppins",
-                              ),
-                            ),
-                            top: height / 13,
-                            left: width / 4.5,
-                          ),
-                        ],
+              child: Container(
+                color: SecondaryColor,
+                height: height / 4.5,
+                width: width,
+                child: Stack(
+                  clipBehavior: Clip.none,
+                  children: [
+                    Positioned(
+                      child: Text(
+                        'Verification Code',
+                        style: TextStyle(
+                          fontSize: width / 15,
+                          color: MainColor,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: "Poppins",
+                        ),
                       ),
+                      top: height / 13,
+                      left: width / 4.5,
                     ),
-                  ),
-                  Container(
-                    color: MainColor,
-                    height: height / 27,
-                    width: width,
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
             Image.asset(

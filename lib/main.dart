@@ -1,12 +1,15 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:tourism/firebase_options.dart';
-import 'package:tourism/screens/Home_screen.dart';
-import 'package:tourism/screens/Login.dart';
-import 'package:tourism/screens/Register.dart';
-import 'package:animated_splash_screen/animated_splash_screen.dart';
-import 'package:tourism/screens/auth_screen.dart';
-import 'package:tourism/screens/verification_screen.dart';
+import 'screens/Home_screen.dart';
+import 'screens/Login.dart';
+import 'screens/Register.dart';
+import 'screens/auth_screen.dart';
+import 'screens/details_screen.dart';
+import 'screens/forget_screen.dart';
+import 'screens/profile_screen.dart';
+import 'screens/verification_screen.dart';
+import 'screens/navigation_bar.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,25 +26,17 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       routes: {
-        Login.id:(context)=>Login(),
         Regester.id:(context)=>Regester(),
-        Home.id:(context)=>Home(),
+        Login.id:(context)=>Login(),
         Authpage.id:(context)=>Authpage(),
+        NavigationPage.id: (context)=>NavigationPage(),
+        Home.id:(context)=>Home(),
+        Profile.id:(context)=>Profile(),
+        ForgetPassword.id:(context)=>ForgetPassword(),
+        Verif.id: (context)=>Verif(),
       },
       debugShowCheckedModeBanner: false,
-        home: Builder(
-          builder: (context) {
-            double screenwidht=MediaQuery.of(context).size.width;
-            double screenheight=MediaQuery.of(context).size.width;
-            return AnimatedSplashScreen(
-              splashIconSize: screenheight,
-              centered: false,
-              backgroundColor:  Color(0xff364958),
-              splash: Image.asset('assets/images/Group 1.png'),
-              nextScreen: Verif(),
-            );
-          }
-        ),
+        home: Login(),
     );
   }
 }

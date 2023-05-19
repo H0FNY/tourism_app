@@ -1,15 +1,23 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:tourism/Constants/constants.dart';
+import 'package:tourism/screens/Home_screen.dart';
 import 'package:tourism/screens/Register.dart';
 import 'package:tourism/componant/componant.dart';
+import 'package:tourism/screens/forget_screen.dart';
+import 'package:tourism/screens/navigation_bar.dart';
+import 'package:tourism/shared/shared.dart';
+
+import '../models/user_model.dart';
 
 class Login extends StatelessWidget {
   static String id = "Login";
   bool hide = true;
-  double width = 0,height = 0;
-  String email="",password="";
+  double width = 0, height = 0;
+  String email = "", password = "";
   final emailController = TextEditingController();
 
   final passwordController = TextEditingController();
@@ -74,16 +82,31 @@ class Login extends StatelessWidget {
                 TextForm(
                   prefxicon: Icon(Icons.person),
                   hinttext: 'Username',
-                  validator: (value){
+                  validator: (value) {
                     if (value!.isEmpty)
                       return "please enter your Email";
-                    else if (emailValid.hasMatch(emailController.toString()))return "Enter valid Email";
-                  }
+                    else if (emailValid.hasMatch(emailController.toString()))
+                      return "Enter valid Email";
+                  },
+                  controller: emailController,
+                  onchange: (value) {
+                    email = value;
+                  },
                 ),
                 SizedBox(
                   height: height / 20,
                 ),
                 TextForm(
+                  controller: passwordController,
+                  validator: (value) {
+                    if (value!.isEmpty)
+                      return "please enter your Email";
+                    else if (emailValid.hasMatch(emailController.toString()))
+                      return "Enter valid Email";
+                  },
+                  onchange: (value) {
+                    password = value;
+                  },
                   prefxicon: Icon(Icons.password),
                   hide: true,
                   hinttext: 'Password',
@@ -102,7 +125,10 @@ class Login extends StatelessWidget {
                             fontWeight: FontWeight.bold),
                       ),
                       GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                          navigate(
+                              context: context, PageName: ForgetPassword.id);
+                        },
                         child: Text(
                           'Password ?',
                           style: TextStyle(
@@ -130,9 +156,37 @@ class Login extends StatelessWidget {
                             borderRadius: BorderRadius.circular(8.0)),
                       ),
                     ),
-                    onPressed: () {
+                    onPressed: () async {
                       if (formKey.currentState!.validate()) {
+                        try {
+                          SignedinUser = await FirebaseAuth.instance
+                              .signInWithEmailAndPassword(
+                                  email: email, password: password);
+                          await FirebaseFirestore.instance
+                              .collection('Guide')
+                              .doc(SignedinUser.user!.uid)
+                              .get()
+                              .then((value) {
+                            MyAccount = UserModel.fromJson(value.data()!);
+                          }).catchError((error) {
+                          });
+                          await FirebaseFirestore.instance
+                              .collection('Tourist')
+                              .doc(SignedinUser.user!.uid)
+                              .get()
+                              .then((value) {
+                            MyAccount = UserModel.fromJson(value.data()!);
+                          }).catchError((error) {
+                          });
 
+                        } on FirebaseAuthException catch (e) {
+                          if (e.code == 'user-not-found') {
+                            print('No user found for that email.');
+                          } else if (e.code == 'wrong-password') {
+                            print('Wrong password provided for that user.');
+                          }
+                        }
+                        navigate(context: context, PageName: NavigationPage.id);
                       }
                     },
                     child: Text(
@@ -182,9 +236,10 @@ class Login extends StatelessWidget {
       ),
     );
   }
-  Future<void> loginuser()  async{
+
+  Future<void> loginuser() async {
     UserCredential user =
-    await FirebaseAuth.instance.signInWithEmailAndPassword(
+        await FirebaseAuth.instance.signInWithEmailAndPassword(
       email: email,
       password: password,
     );
