@@ -1,6 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:tourism/models/user_model.dart';
 
+import '../models/post_model.dart';
+
 late UserModel MyAccount;
 late UserCredential SignedinUser;
-late String ImageUrl;
+String ImageUrl="https://www.pngitem.com/pimgs/m/30-307416_profile-icon-png-image-free-download-searchpng-employee.png";
+
+List<PostDataModel> postsList = [];
+List<PostDataModel> myServices=[];

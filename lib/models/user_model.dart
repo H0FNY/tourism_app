@@ -4,18 +4,21 @@ class UserModel {
     required this.username,
     required this.email,
     required this.image,
+    required this.tourist
   });
 
-  late final String uId;
-  late final String username;
-  late final String email;
-  late final String image;
+  late  String uId;
+  late  String username;
+  late  String email;
+  late  String image;
+  late bool tourist;
 
-  UserModel.fromJson(Map<String, dynamic> json) {
+  UserModel.fromJson(json) {
     uId = json['uId'] ?? '';
     username = json['username'] ?? '';
     email = json['email'] ?? '';
     image = json['image'] ?? '';
+    tourist=json['tourist']??'';
   }
 
   Map<String, dynamic> toJson() {
@@ -24,6 +27,7 @@ class UserModel {
       'username': username,
       'email': email,
       'image': image,
+      'tourist':tourist,
     };
   }
 }

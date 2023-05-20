@@ -7,6 +7,7 @@ import 'package:tourism/Constants/constants.dart';
 import 'package:tourism/models/user_model.dart';
 import 'package:tourism/screens/Login.dart';
 import 'package:tourism/componant/componant.dart';
+import 'package:tourism/shared/shared.dart';
 
 class Regester extends StatefulWidget {
   static String id = "Register";
@@ -16,7 +17,6 @@ class Regester extends StatefulWidget {
 
 class _RegesterState extends State<Regester> {
   String email = "", password = "", username = "", re_password = "", phone = "";
-  late UserCredential user;
   List checkListItems = [
     {
       "id": 0,
@@ -235,8 +235,8 @@ class _RegesterState extends State<Regester> {
                             });
                             try {
                               await createUser();
-                              UserModel Ruser =UserModel(uId: user.user!.uid, username: username, email: email, image: "");
-                              FirebaseFirestore.instance.collection("Tourist").doc(user.user!.uid).set(
+                              UserModel Ruser =UserModel(uId: SignedinUser.user!.uid, username: username, email: email, image: "https://www.pngitem.com/pimgs/m/30-307416_profile-icon-png-image-free-download-searchpng-employee.png", tourist: true);
+                              FirebaseFirestore.instance.collection("Users").doc(SignedinUser.user!.uid).set(
                                 Ruser.toJson()
                               );
                               showSnackBar(
@@ -271,8 +271,8 @@ class _RegesterState extends State<Regester> {
                             });
                             try {
                               await createUser();
-                              UserModel Ruser =UserModel(uId: user.user!.uid, username: username, email: email, image: "");
-                              FirebaseFirestore.instance.collection("Guide").doc(user.user!.uid).set(
+                              UserModel Ruser =UserModel(uId: SignedinUser.user!.uid, username: username, email: email, image: "", tourist: false);
+                              FirebaseFirestore.instance.collection("Users").doc(SignedinUser.user!.uid).set(
                                   Ruser.toJson()
                               );
                               showSnackBar(
@@ -356,7 +356,7 @@ class _RegesterState extends State<Regester> {
   }
 
   Future<void> createUser() async {
-    user =
+    SignedinUser =
         await FirebaseAuth.instance.createUserWithEmailAndPassword(
       email: email,
       password: password,

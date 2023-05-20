@@ -8,10 +8,11 @@ import 'package:tourism/screens/Home_screen.dart';
 import 'package:tourism/screens/Register.dart';
 import 'package:tourism/componant/componant.dart';
 import 'package:tourism/screens/forget_screen.dart';
-import 'package:tourism/screens/navigation_bar.dart';
+import 'package:tourism/screens/Gnavigation_bar.dart';
 import 'package:tourism/shared/shared.dart';
 
 import '../models/user_model.dart';
+import 'Tnavigation_bar.dart';
 
 class Login extends StatelessWidget {
   static String id = "Login";
@@ -100,9 +101,9 @@ class Login extends StatelessWidget {
                   controller: passwordController,
                   validator: (value) {
                     if (value!.isEmpty)
-                      return "please enter your Email";
+                      return "Please enter strong password";
                     else if (emailValid.hasMatch(emailController.toString()))
-                      return "Enter valid Email";
+                      return "Enter valid Password";
                   },
                   onchange: (value) {
                     password = value;
@@ -163,22 +164,15 @@ class Login extends StatelessWidget {
                               .signInWithEmailAndPassword(
                                   email: email, password: password);
                           await FirebaseFirestore.instance
-                              .collection('Guide')
+                              .collection('Users')
                               .doc(SignedinUser.user!.uid)
                               .get()
                               .then((value) {
                             MyAccount = UserModel.fromJson(value.data()!);
                           }).catchError((error) {
                           });
-                          await FirebaseFirestore.instance
-                              .collection('Tourist')
-                              .doc(SignedinUser.user!.uid)
-                              .get()
-                              .then((value) {
-                            MyAccount = UserModel.fromJson(value.data()!);
-                          }).catchError((error) {
-                          });
-
+                          emailController.clear();
+                          passwordController.clear();
                         } on FirebaseAuthException catch (e) {
                           if (e.code == 'user-not-found') {
                             print('No user found for that email.');
@@ -186,7 +180,11 @@ class Login extends StatelessWidget {
                             print('Wrong password provided for that user.');
                           }
                         }
-                        navigate(context: context, PageName: NavigationPage.id);
+                        if(MyAccount.tourist)
+                        Navigator.pushNamedAndRemoveUntil(context, TNavigationPage.id, (route) => false);
+                        else {
+                          Navigator.pushNamedAndRemoveUntil(context, GNavigationPage.id, (route) => false);
+                        }
                       }
                     },
                     child: Text(

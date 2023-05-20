@@ -9,24 +9,27 @@ import 'package:tourism/screens/chat_screen.dart';
 import 'package:tourism/screens/myservice_screen.dart';
 import 'package:tourism/screens/profile_screen.dart';
 import 'package:tourism/screens/settings_screen.dart';
+import 'package:tourism/screens/test.dart';
 import 'package:tourism/shared/shared.dart';
 
+import '../models/post_model.dart';
 import '../models/user_model.dart';
 
-class NavigationPage extends StatefulWidget {
-  const NavigationPage({Key? key}) : super(key: key);
-  static String id = "NavigationPage_screen";
+class TNavigationPage extends StatefulWidget {
+  const TNavigationPage({Key? key}) : super(key: key);
+  static String id = "TNavigationPage_screen";
 
   @override
-  State<NavigationPage> createState() => _NavigationPageState();
+  State<TNavigationPage> createState() => _TNavigationPageState();
 }
 
-class _NavigationPageState extends State<NavigationPage> {
+class _TNavigationPageState extends State<TNavigationPage> {
   double width = 0, height = 0;
   int index = 0;
+
   List<String> name=[
     "Home",
-    "My Service",
+    "Proposal",
     "Chat",
     "Settings",
   ];
@@ -34,7 +37,7 @@ class _NavigationPageState extends State<NavigationPage> {
     Home(),
     MyScervices(),
     Chat(),
-    Setting(),
+    Test(),
   ];
 
   @override
@@ -81,6 +84,7 @@ class _NavigationPageState extends State<NavigationPage> {
           const EdgeInsets.symmetric(horizontal: 10.0, vertical: 12),
           child: GNav(
               onTabChange: (ind) {
+
                 setState(() {
                   index = ind;
                 });
@@ -113,6 +117,4 @@ class _NavigationPageState extends State<NavigationPage> {
       ),
     );
   }
-
-
 }

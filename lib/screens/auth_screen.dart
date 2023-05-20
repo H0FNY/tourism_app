@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tourism/screens/Login.dart';
-import 'package:tourism/screens/navigation_bar.dart';
+import 'package:tourism/screens/Gnavigation_bar.dart';
 
 import '../componant/componant.dart';
 import '../models/user_model.dart';
@@ -14,11 +14,29 @@ static String id ="Authpage";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: StreamBuilder<User?>(
+        body: StreamBuilder<User?> (
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (context,snapshot){
-            if(snapshot.hasData) return NavigationPage();
-            else return Login();
+            if(snapshot.hasData) {
+              String userId= FirebaseAuth.instance.currentUser!.uid;
+              FirebaseFirestore.instance
+                  .collection('Guide')
+                  .doc(SignedinUser.user!.uid)
+                  .get()
+                  .then((value) {
+                MyAccount = UserModel.fromJson(value.data()!);
+              }).catchError((error) {
+              });
+              FirebaseFirestore.instance
+                  .collection('Tourist')
+                  .doc(SignedinUser.user!.uid)
+                  .get()
+                  .then((value) {
+                MyAccount = UserModel.fromJson(value.data()!);
+              }).catchError((error) {
+              });
+              return GNavigationPage();
+            } else return Login();
           },
         ),
     );
