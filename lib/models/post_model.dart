@@ -2,18 +2,21 @@ import 'package:tourism/models/user_model.dart';
 
 class PostDataModel {
   PostDataModel({
+    required this.title,
     required this.description,
     required this.time,
     required this.price,
     required this.UserID
   });
 
-  late final String description;
-  late final String time;
-  late final String price;
-  late final String UserID;
+  late String title;
+  late String description;
+  late String time;
+  late String price;
+  late String UserID;
 
   PostDataModel.fromJson(json) {
+    title =json['title']??"";
     description = json['description'] ?? '';
     time = json['time'] ?? '';
     price=json['price']??'';
@@ -22,6 +25,7 @@ class PostDataModel {
 
   Map<String, dynamic> toJson() {
     return {
+      "title" : title,
       'description': description,
       'time': time,
       'price':price,

@@ -379,7 +379,12 @@ class _HomeState extends State<Home> {
         .get()
         .then((value) {
       value.docs.forEach((element) {
-        postsList.add(PostDataModel.fromJson(element.data()));
+
+          postsList.add(
+              {
+                "id":element.id,
+          "post":PostDataModel.fromJson(element.data()),
+        });
         // print(element.data());
       });
     });
@@ -435,11 +440,12 @@ class _HomeState extends State<Home> {
                     return HomePost(
                       width: width,
                       height: height,
-                      desc: postsList[index].description,
-                      price: postsList[index].price,
-                      time: postsList[index].time,
-                      UserId: postsList[index].UserID,
-
+                      title: postsList[index]["post"].title,
+                      desc: postsList[index]["post"].description,
+                      price: postsList[index]["post"].price,
+                      time: postsList[index]["post"].time,
+                      UserId: postsList[index]["post"].UserID,
+                      ServiceID: postsList[index]["id"],
                     );
                   },
                 ),
@@ -463,8 +469,12 @@ class HomePost extends StatelessWidget {
     required this.price,
     required this.time,
     required this.UserId,
+    required this.title,
+    required this.ServiceID,
   });
 
+  final String ServiceID;
+  final String title;
   final double width;
   final double height;
   final String desc;
@@ -561,7 +571,24 @@ class HomePost extends StatelessWidget {
                   ],
                 ),
                 SizedBox(
-                  height: height / 80,
+                  height: 4,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: TextStyle(
+                        color: GreenColor,
+                        fontSize: width / 20,
+                        fontFamily: "Poppins",
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 3,
                 ),
                 Row(
                   children: [
@@ -571,7 +598,7 @@ class HomePost extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                         desc,
                         style: TextStyle(
-                          fontSize: width / 22,
+                          fontSize: width / 25,
                           color: SecondaryColor,
                         ),
                       ),
@@ -628,7 +655,7 @@ class HomePost extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(builder: (context) {
-                                return Details();
+                                return Details(desc: desc, price: price, title: title,ServiceID: ServiceID,);
                               }),
                             );
                           },

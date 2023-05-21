@@ -11,9 +11,10 @@ class Test extends StatelessWidget {
         onTap: () {
           FirebaseFirestore.instance
               .collection('Guide_Services').add({
-            "UserID":"gtb81QjlnqPpjjSFEjnwBgDyKvz1",
-            "description": "adsfdslfldf",
-            "price":"25",
+            "title":"Ain Shams",
+            "UserID":"QkhlIaHNrzeJhH52BHwNSCzZTOb2",
+            "description": "Shamssssssssssssss ya dawlaaaaaaa is famous city called balad 7000 sana hadarah",
+            "price":"70",
             "time":DateTime.now().toString(),
           });
         },

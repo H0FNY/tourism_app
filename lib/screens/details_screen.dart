@@ -4,8 +4,17 @@ import 'package:tourism/Constants/constants.dart';
 import 'package:tourism/animation.dart';
 
 class Details extends StatelessWidget {
-
-  Details({Key? key,}) : super(key: key);
+  late String title;
+  late String desc;
+  late String price;
+  late String ServiceID;
+  Details({
+    Key? key,
+    required this.desc,
+    required this.price,
+    required this.title,
+    required this.ServiceID
+  });
   double height = 0, width = 0;
   @override
   Widget build(BuildContext context) {
@@ -26,7 +35,7 @@ class Details extends StatelessWidget {
             top: height / 20,
             left: width / 40,
             child: GestureDetector(
-              onTap: (){
+              onTap: () {
                 Navigator.pop(context);
               },
               child: Container(
@@ -81,7 +90,7 @@ class Details extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "Paris",
+                          title,
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontFamily: "Poppins",
@@ -120,7 +129,7 @@ class Details extends StatelessWidget {
                   FadeAnimation(
                     delay: .3,
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -141,7 +150,7 @@ class Details extends StatelessWidget {
                                     fontWeight: FontWeight.bold),
                                 children: [
                                   TextSpan(
-                                    text: "30",
+                                    text: price,
                                     style: TextStyle(fontSize: width / 25),
                                   ),
                                 ],
@@ -149,33 +158,7 @@ class Details extends StatelessWidget {
                             ),
                           ],
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Icon(
-                              Icons.location_on_rounded,
-                              color: SecondaryColor,
-                              size: width / 18,
-                            ),
-                            SizedBox(
-                              width: width / 80,
-                            ),
-                            RichText(
-                              text: TextSpan(
-                                text: r"Egypt",
-                                style: TextStyle(
-                                  fontSize: width / 25,
-                                ),
-                                children: [
-                                  TextSpan(
-                                    text: " / Luxor",
-                                    style: TextStyle(fontSize: width / 26),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
+
                       ],
                     ),
                   ),
@@ -188,7 +171,7 @@ class Details extends StatelessWidget {
                       height: height / 4,
                       child: SingleChildScrollView(
                         child: Text(
-                          "Paris is a buitful city and we can see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower see Tower see Evil Tower see Evil Tower see Evil Tower see Evil Tower and lover musuim pla pla pla and we can buy french perfum pla pla pla ",
+                          desc,
                           style: TextStyle(
                             fontSize: width / 23,
                             color: SecondaryColor,
@@ -224,11 +207,11 @@ class Details extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(10)),
                               child: Center(
                                 child: Text(
-                                  "Contact",
+                                  "Send Proposal",
                                   style: TextStyle(
                                     color: SecondaryColor,
                                     fontWeight: FontWeight.bold,
-                                    fontSize: width / 16,
+                                    fontSize: width / 17,
                                   ),
                                 ),
                               ),

@@ -9,7 +9,9 @@ import 'package:tourism/screens/Home_screen.dart';
 import 'package:tourism/screens/chat_screen.dart';
 import 'package:tourism/screens/myservice_screen.dart';
 import 'package:tourism/screens/profile_screen.dart';
+import 'package:tourism/screens/proposal_screen.dart';
 import 'package:tourism/screens/settings_screen.dart';
+import 'package:tourism/screens/test.dart';
 import 'package:tourism/shared/shared.dart';
 
 import '../models/user_model.dart';
@@ -25,35 +27,38 @@ class GNavigationPage extends StatefulWidget {
 class _GNavigationPageState extends State<GNavigationPage> {
   double width = 0, height = 0;
   int index = 0;
-  List<String> name=[
+  List<String> name = [
     "Home",
     "My Service",
+    "My Proposal",
     "Chat",
-    "Settings",
+    "Test",
   ];
   List pages = [
     Home(),
     MyScervices(),
+    MyProposal(),
     Chat(),
-    Setting(),
+    Test(),
   ];
 
   @override
-  Widget build(BuildContext context)  {
+  Widget build(BuildContext context) {
     width = MediaQuery.of(context).size.width;
     height = MediaQuery.of(context).size.height;
-    return Scaffold (
+    return Scaffold(
       backgroundColor: MainColor,
       appBar: AppBar(
         backgroundColor: SecondaryColor,
-        leadingWidth: 130,
+        leadingWidth: 150,
         leading: Center(
           child: Text(
             name[index],
             style: TextStyle(
-                color: MainColor,
-                fontSize: 25,
-                fontWeight: FontWeight.bold),
+              color: MainColor,
+              fontSize: 25,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
         actions: [
@@ -64,8 +69,6 @@ class _GNavigationPageState extends State<GNavigationPage> {
                 navigate(context: context, PageName: Profile.id);
               },
               child: CircleAvatar(
-
-                // backgroundImage: AssetImage("assets/images/ace.jpg"),
                 backgroundImage: NetworkImage(MyAccount.image),
               ),
             ),
@@ -79,8 +82,7 @@ class _GNavigationPageState extends State<GNavigationPage> {
           color: SecondaryColor.withOpacity(.1),
         ),
         child: Padding(
-          padding:
-          const EdgeInsets.symmetric(horizontal: 10.0, vertical: 12),
+          padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 12),
           child: GNav(
               onTabChange: (ind) {
                 setState(() {
@@ -103,6 +105,10 @@ class _GNavigationPageState extends State<GNavigationPage> {
                   text: "My services",
                 ),
                 GButton(
+                  icon: Icons.menu,
+                  text: "My Proposal",
+                ),
+                GButton(
                   icon: Icons.chat,
                   text: "Chat",
                 ),
@@ -115,6 +121,4 @@ class _GNavigationPageState extends State<GNavigationPage> {
       ),
     );
   }
-
-
 }

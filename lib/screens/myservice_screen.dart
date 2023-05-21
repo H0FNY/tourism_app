@@ -9,24 +9,30 @@ import '../models/user_model.dart';
 import '../shared/shared.dart';
 
 class MyScervices extends StatelessWidget {
-   MyScervices({Key? key}) : super(key: key);
+  MyScervices({Key? key}) : super(key: key);
   static String id = "MyScervices_screen";
   double width = 0, height = 0;
-   final animationcontroller = ScrollController();
+  final animationcontroller = ScrollController();
 
-   Future getdata() async {
-     myServices=[];
-     await FirebaseFirestore.instance
-         .collection('Guide_Services').orderBy('time',descending: true).where("UserID",isEqualTo: "gtb81QjlnqPpjjSFEjnwBgDyKvz1")
-         .get()
-         .then((value) {
-       value.docs.forEach((element) {
-         myServices.add(PostDataModel.fromJson(element.data()));
-         // print(element.data());
-       });
-     });
-     return postsList;
-   }
+  Future getdata() async {
+    myServices = [];
+
+    await FirebaseFirestore.instance
+        .collection('Guide_Services')
+        .orderBy('time', descending: true)
+        .where("UserID", isEqualTo: MyAccount.uId)
+        .get()
+        .then((value) {
+      value.docs.forEach((element) {
+        myServices.add({
+          "post":PostDataModel.fromJson(element.data()),
+          "id":element.id,
+        });
+        // print(element.data());
+      });
+    });
+    return postsList;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,10 +41,9 @@ class MyScervices extends StatelessWidget {
     return FutureBuilder(
       future: getdata(),
       builder: (context, snapshot) {
-        if(snapshot.connectionState==ConnectionState.waiting){
+        if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(child: CircularProgressIndicator());
-        }
-        else if (snapshot.hasData){
+        } else if (snapshot.hasData) {
           return Column(
             children: [
               SizedBox(
@@ -52,25 +57,25 @@ class MyScervices extends StatelessWidget {
                     return MyPost(
                       width: width,
                       height: height,
-                      desc: myServices[index].description,
-                      price: myServices[index].price,
-                      time: myServices[index].time,
-                      UserId: myServices[index].UserID,
+                      title: myServices[index]["post"].title,
+                      desc: myServices[index]["post"].description,
+                      price: myServices[index]["post"].price,
+                      time: myServices[index]["post"].time,
+                      UserId: myServices[index]["post"].UserID,
+                      ServiceID: myServices[index]["id"],
                     );
                   },
                 ),
               ),
             ],
           );
-        }
-        else {
+        } else {
           return Text("Error");
         }
       },
     );
   }
 }
-
 
 class MyPost extends StatelessWidget {
   MyPost({
@@ -80,17 +85,22 @@ class MyPost extends StatelessWidget {
     required this.price,
     required this.time,
     required this.UserId,
+    required this.title,
+    required this.ServiceID,
   });
+  final String ServiceID;
+  String title;
+  double width;
+  double height;
+  String desc;
+  String price;
+  String time;
+  String UserId;
 
-  final double width;
-  final double height;
-  final String desc;
-  final String price;
-  final String time;
-  final String UserId;
+  late UserModel userModel;
 
-  late final UserModel userModel;
-
+  String? changedTitle;
+  String? changeddesc;
   @override
   getdata() async {
     await FirebaseFirestore.instance
@@ -99,20 +109,18 @@ class MyPost extends StatelessWidget {
         .get()
         .then((value) {
       // print(value.data());
-      userModel =UserModel.fromJson(value.data());
+      userModel = UserModel.fromJson(value.data());
       return userModel;
     });
   }
-
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
       future: getdata(),
-      builder: (context,snapshot) {
-        if(snapshot.connectionState==ConnectionState.waiting){
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
           return Column();
-        }
-        else {
+        } else {
           return GestureDetector(
             onLongPress: () {
               showDialog(
@@ -130,23 +138,23 @@ class MyPost extends StatelessWidget {
                           Row(
                             children: [
                               SizedBox(
-                                width: width / 8,
+                                width: width / 13,
                               ),
                               CircleAvatar(
                                 child: CircleAvatar(
                                   backgroundImage:
-                                  AssetImage("assets/images/ace.jpg"),
+                                      NetworkImage(userModel.image),
                                   radius: width / 19 - 1.5,
                                 ),
                                 backgroundColor: Colors.white,
                                 radius: width / 19,
                               ),
                               SizedBox(
-                                width: width/28,
+                                width: width / 28,
                               ),
                               Expanded(
                                 child: Text(
-                                  "Ahmed Mohamed Hofny nasreldeeeen",
+                                  userModel.username,
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
@@ -158,14 +166,14 @@ class MyPost extends StatelessWidget {
                                 ),
                               ),
                               Container(
-                                margin: EdgeInsets.only(right: width/20),
+                                margin: EdgeInsets.only(right: width / 13),
                                 padding: EdgeInsets.all(2.5),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10),
                                   color: SecondaryColor,
                                 ),
                                 child: GestureDetector(
-                                  onTap:(){
+                                  onTap: () {
                                     Navigator.pop(context);
                                   },
                                   child: Icon(
@@ -191,6 +199,9 @@ class MyPost extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 TextFormField(
+                                  onChanged:(value){
+                                    changedTitle=value;
+                                  },
                                   style: TextStyle(
                                     color: SecondaryColor,
                                   ),
@@ -215,7 +226,41 @@ class MyPost extends StatelessWidget {
                                       color: SecondaryColor,
                                     ),
                                   ),
-                                  initialValue: "ahmed plapla ",
+                                  initialValue: title,
+                                  showCursor: true,
+                                  cursorColor: SecondaryColor,
+                                  maxLines: 1,
+                                ),
+                                SizedBox(height: 5,),
+                                TextFormField(
+                                  onChanged:(value){
+                                    changeddesc=value;
+                                  },
+                                  style: TextStyle(
+                                    color: SecondaryColor,
+                                  ),
+                                  decoration: InputDecoration(
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: SecondaryColor,
+                                        width: 2,
+                                      ),
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(8.0)),
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: SecondaryColor,
+                                        width: 1.5,
+                                      ),
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(8.0)),
+                                    ),
+                                    labelStyle: TextStyle(
+                                      color: SecondaryColor,
+                                    ),
+                                  ),
+                                  initialValue: desc,
                                   showCursor: true,
                                   cursorColor: SecondaryColor,
                                   maxLines: 10,
@@ -248,7 +293,7 @@ class MyPost extends StatelessWidget {
                                             Container(
                                               decoration: BoxDecoration(
                                                 borderRadius:
-                                                BorderRadius.circular(15),
+                                                    BorderRadius.circular(15),
                                                 color: SecondaryColor,
                                               ),
                                               padding: EdgeInsets.fromLTRB(
@@ -262,27 +307,28 @@ class MyPost extends StatelessWidget {
                                             ),
                                             Row(
                                               mainAxisAlignment:
-                                              MainAxisAlignment
-                                                  .spaceBetween,
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
                                               children: [
                                                 SizedBox(
                                                   width: 5,
                                                 ),
                                                 GestureDetector(
-                                                  onTap: () {},
+                                                  onTap: () {
+                                                    Navigator.pop(context);
+                                                  },
                                                   child: Container(
                                                     padding: const EdgeInsets
-                                                        .symmetric(
+                                                            .symmetric(
                                                         horizontal: 16,
                                                         vertical: 10),
                                                     margin:
-                                                    const EdgeInsets.all(
-                                                        8),
+                                                        const EdgeInsets.all(8),
                                                     decoration: BoxDecoration(
                                                       color: Colors.red,
                                                       borderRadius:
-                                                      BorderRadius
-                                                          .circular(10),
+                                                          BorderRadius.circular(
+                                                              10),
                                                     ),
                                                     child: Text(
                                                       "Cancel",
@@ -293,18 +339,26 @@ class MyPost extends StatelessWidget {
                                                   ),
                                                 ),
                                                 GestureDetector(
-                                                  onTap: () {},
+                                                  onTap: () async {
+                                                    try{
+                                                      await FirebaseFirestore.instance.collection("Guide_Services").doc(ServiceID).delete();
+                                                      Navigator.pop(context);
+                                                      Navigator.pop(context);
+                                                    }catch (e){
+                                                      
+                                                    }
+                                                  },
                                                   child: Container(
                                                     padding:
-                                                    EdgeInsets.symmetric(
-                                                        horizontal: 16,
-                                                        vertical: 10),
+                                                        EdgeInsets.symmetric(
+                                                            horizontal: 16,
+                                                            vertical: 10),
                                                     margin: EdgeInsets.all(8),
                                                     decoration: BoxDecoration(
                                                       color: Colors.green,
                                                       borderRadius:
-                                                      BorderRadius
-                                                          .circular(10),
+                                                          BorderRadius.circular(
+                                                              10),
                                                     ),
                                                     child: Text(
                                                       "Yes",
@@ -342,7 +396,21 @@ class MyPost extends StatelessWidget {
                                 ),
                               ),
                               GestureDetector(
-                                onTap: () {},
+                                onTap: () async {
+                                  try{
+                                    await FirebaseFirestore.instance.collection("Guide_Services").doc(ServiceID).update(
+                                        {
+                                          "title":changedTitle==null? title:changedTitle,
+                                          "description":changeddesc==null?desc : changeddesc,
+                                        }
+                                    );
+                                    title:changedTitle==null? title:changedTitle;
+                                  desc :changeddesc==null?desc : changeddesc;
+                                  }catch (e){
+
+                                  }
+                                  Navigator.pop(context);
+                                },
                                 child: Container(
                                   padding: EdgeInsets.symmetric(
                                       horizontal: 16, vertical: 10),
@@ -371,7 +439,7 @@ class MyPost extends StatelessWidget {
             },
             child: Container(
               width: width,
-              margin: EdgeInsets.symmetric(horizontal: 13,vertical: 4),
+              margin: EdgeInsets.symmetric(horizontal: 13, vertical: 4),
               padding: EdgeInsets.only(top: 8, bottom: 12, right: 8, left: 8),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12),
@@ -412,7 +480,10 @@ class MyPost extends StatelessWidget {
                               ),
                             ),
                             Text(
-                              "At "+time.substring(11,16)+" "+time.substring(5,10),
+                              "At " +
+                                  time.substring(11, 16) +
+                                  " " +
+                                  time.substring(5, 10),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
@@ -434,7 +505,24 @@ class MyPost extends StatelessWidget {
                     ],
                   ),
                   SizedBox(
-                    height: height / 80,
+                    height: 4,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        title,
+                        style: TextStyle(
+                          color: GreenColor,
+                          fontSize: width / 20,
+                          fontFamily: "Poppins",
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 3,
                   ),
                   Row(
                     children: [
@@ -444,7 +532,7 @@ class MyPost extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                           desc,
                           style: TextStyle(
-                            fontSize: width / 22,
+                            fontSize: width / 25,
                             color: SecondaryColor,
                           ),
                         ),
@@ -494,44 +582,38 @@ class MyPost extends StatelessWidget {
                           ),
                         ],
                       ),
-                      Row(
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) {
-                                  return Details();
-                                }),
-                              );
-                            },
-                            child: Container(
-                              height: height / 30,
-                              decoration: BoxDecoration(
-                                  color: SecondaryColor,
-                                  borderRadius: BorderRadius.circular(10)),
-                              child: Center(
-                                child: Padding(
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: width / 22,
-                                  ),
-                                  child: Text(
-                                    "Preview",
-                                    style: TextStyle(
-                                      color: GreenColor,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: width / 25,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          )
-                        ],
-                      )
+                      // Row(
+                      //   children: [
+                      //     GestureDetector(
+                      //       onTap: () {
+                      //       },
+                      //       child: Container(
+                      //         height: height / 30,
+                      //         decoration: BoxDecoration(
+                      //             color: SecondaryColor,
+                      //             borderRadius: BorderRadius.circular(10)),
+                      //         child: Center(
+                      //           child: Padding(
+                      //             padding: EdgeInsets.symmetric(
+                      //               horizontal: width / 22,
+                      //             ),
+                      //             child: Text(
+                      //               "Preview",
+                      //               style: TextStyle(
+                      //                 color: GreenColor,
+                      //                 fontWeight: FontWeight.bold,
+                      //                 fontSize: width / 25,
+                      //               ),
+                      //             ),
+                      //           ),
+                      //         ),
+                      //       ),
+                      //     ),
+                      //     SizedBox(
+                      //       width: 10,
+                      //     )
+                      //   ],
+                      // )
                     ],
                   ),
                 ],

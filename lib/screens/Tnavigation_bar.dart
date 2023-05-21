@@ -8,6 +8,7 @@ import 'package:tourism/screens/Home_screen.dart';
 import 'package:tourism/screens/chat_screen.dart';
 import 'package:tourism/screens/myservice_screen.dart';
 import 'package:tourism/screens/profile_screen.dart';
+import 'package:tourism/screens/proposal_screen.dart';
 import 'package:tourism/screens/settings_screen.dart';
 import 'package:tourism/screens/test.dart';
 import 'package:tourism/shared/shared.dart';
@@ -35,7 +36,7 @@ class _TNavigationPageState extends State<TNavigationPage> {
   ];
   List pages = [
     Home(),
-    MyScervices(),
+    MyProposal(),
     Chat(),
     Test(),
   ];
