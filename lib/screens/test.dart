@@ -9,14 +9,7 @@ class Test extends StatelessWidget {
     return Scaffold(
       body: GestureDetector(
         onTap: () {
-          FirebaseFirestore.instance
-              .collection('Guide_Services').add({
-            "title":"Ain Shams",
-            "UserID":"QkhlIaHNrzeJhH52BHwNSCzZTOb2",
-            "description": "Shamssssssssssssss ya dawlaaaaaaa is famous city called balad 7000 sana hadarah",
-            "price":"70",
-            "time":DateTime.now().toString(),
-          });
+
         },
         child: Icon(Icons.add),
       ),

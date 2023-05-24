@@ -123,11 +123,11 @@ class _RegesterState extends State<Regester> {
                       prefxicon: Icon(Icons.attach_email_rounded),
                       hinttext: 'Email Adress',
                       validator: (value) {
-                        if (value!.isEmpty)
-                          return "Enter Email Address";
-                        else if (emailValid
-                            .hasMatch(emailController.toString()))
-                          return "Enter valid Email";
+                        return RegExp(
+                            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                            .hasMatch(value!)
+                            ? null
+                            : "Please enter a valid email";
                       }),
                   SizedBox(
                     height: height / 42,
@@ -149,11 +149,26 @@ class _RegesterState extends State<Regester> {
                     height: height / 42,
                   ),
                   TextForm(
+                      sufficon: IconButton(
+                        onPressed: () {
+                          hide1 = !hide1;
+                          setState(() {});
+                        },
+                        icon: hide1
+                            ? Icon(
+                                Icons.visibility,
+                                color: MainColor,
+                              )
+                            : Icon(
+                                Icons.visibility_off,
+                                color: MainColor,
+                              ),
+                      ),
+                      hide: hide1,
                       onchange: (value) {
                         password = value;
                       },
                       prefxicon: Icon(Icons.password),
-                      hide: true,
                       hinttext: 'Password',
                       validator: (value) {
                         if (value!.isEmpty)
@@ -165,11 +180,26 @@ class _RegesterState extends State<Regester> {
                     height: height / 42,
                   ),
                   TextForm(
+                      sufficon: IconButton(
+                        onPressed: () {
+                          hide2 = !hide2;
+                          setState(() {});
+                        },
+                        icon: hide2
+                            ? Icon(
+                                Icons.visibility,
+                                color: MainColor,
+                              )
+                            : Icon(
+                                Icons.visibility_off,
+                                color: MainColor,
+                              ),
+                      ),
+                      hide: hide2,
                       onchange: (value) {
                         re_password = value;
                       },
                       prefxicon: Icon(Icons.password),
-                      hide: true,
                       hinttext: 'Re-Password',
                       validator: (value) {
                         if (value!.isEmpty)
@@ -235,10 +265,19 @@ class _RegesterState extends State<Regester> {
                             });
                             try {
                               await createUser();
-                              UserModel Ruser =UserModel(uId: SignedinUser.user!.uid, username: username, email: email, image: "https://www.pngitem.com/pimgs/m/30-307416_profile-icon-png-image-free-download-searchpng-employee.png", tourist: true);
-                              FirebaseFirestore.instance.collection("Users").doc(SignedinUser.user!.uid).set(
-                                Ruser.toJson()
+                              UserModel Ruser = UserModel(
+                                uId: SignedinUser.user!.uid,
+                                username: username,
+                                email: email,
+                                image:
+                                    "https://www.pngitem.com/pimgs/m/30-307416_profile-icon-png-image-free-download-searchpng-employee.png",
+                                tourist: true,
+                                phone: phone,
                               );
+                              FirebaseFirestore.instance
+                                  .collection("Users")
+                                  .doc(SignedinUser.user!.uid)
+                                  .set(Ruser.toJson());
                               showSnackBar(
                                 context,
                                 'Success In Create Account',
@@ -271,10 +310,18 @@ class _RegesterState extends State<Regester> {
                             });
                             try {
                               await createUser();
-                              UserModel Ruser =UserModel(uId: SignedinUser.user!.uid, username: username, email: email, image: "", tourist: false);
-                              FirebaseFirestore.instance.collection("Users").doc(SignedinUser.user!.uid).set(
-                                  Ruser.toJson()
+                              UserModel Ruser = UserModel(
+                                uId: SignedinUser.user!.uid,
+                                username: username,
+                                email: email,
+                                image: "",
+                                tourist: false,
+                                phone: phone,
                               );
+                              FirebaseFirestore.instance
+                                  .collection("Users")
+                                  .doc(SignedinUser.user!.uid)
+                                  .set(Ruser.toJson());
                               showSnackBar(
                                 context,
                                 'Success In Create Account',
@@ -356,8 +403,7 @@ class _RegesterState extends State<Regester> {
   }
 
   Future<void> createUser() async {
-    SignedinUser =
-        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+    SignedinUser = await FirebaseAuth.instance.createUserWithEmailAndPassword(
       email: email,
       password: password,
     );

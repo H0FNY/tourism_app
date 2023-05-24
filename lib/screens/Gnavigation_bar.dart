@@ -1,6 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:tourism/Constants/constants.dart';
@@ -10,11 +8,8 @@ import 'package:tourism/screens/chat_screen.dart';
 import 'package:tourism/screens/myservice_screen.dart';
 import 'package:tourism/screens/profile_screen.dart';
 import 'package:tourism/screens/proposal_screen.dart';
-import 'package:tourism/screens/settings_screen.dart';
 import 'package:tourism/screens/test.dart';
 import 'package:tourism/shared/shared.dart';
-
-import '../models/user_model.dart';
 
 class GNavigationPage extends StatefulWidget {
   const GNavigationPage({Key? key}) : super(key: key);
@@ -27,6 +22,12 @@ class GNavigationPage extends StatefulWidget {
 class _GNavigationPageState extends State<GNavigationPage> {
   double width = 0, height = 0;
   int index = 0;
+  String title="",desc="",price="";
+  final formKey = GlobalKey<FormState>();
+  final titleController = TextEditingController();
+  final descController = TextEditingController();
+  final priceController = TextEditingController();
+
   List<String> name = [
     "Home",
     "My Service",
@@ -119,6 +120,259 @@ class _GNavigationPageState extends State<GNavigationPage> {
               ]),
         ),
       ),
+      floatingActionButton: index == 1
+          ? FloatingActionButton(
+              backgroundColor: SecondaryColor,
+              onPressed: () {
+                showDialog(
+                    useSafeArea: false,
+                    context: context,
+                    builder: (context) {
+                      return Form(
+                        key: formKey,
+                        child: AlertDialog(
+                          backgroundColor: Colors.transparent,
+                          insetPadding: EdgeInsets.zero,
+                          contentPadding: EdgeInsets.zero,
+                          clipBehavior: Clip.none,
+                          content: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Container(
+                                width: width / 1.07,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: MainColor,
+                                ),
+                                padding: EdgeInsets.fromLTRB(20, 10, 20, 20),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Text(
+                                          "Add New Service",
+                                          style: TextStyle(
+                                            color: SecondaryColor,
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
+                                            fontFamily: "Poppins",
+                                          ),
+                                        ),
+                                        Spacer(
+                                          flex: 1,
+                                        ),
+                                        Container(
+                                          padding: EdgeInsets.all(2.5),
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            color: SecondaryColor,
+                                          ),
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              Navigator.pop(context);
+                                            },
+                                            child: Icon(
+                                              Icons.close,
+                                              color: Colors.red,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    TextFormField(
+                                      onChanged: (value) {
+                                        title=value;
+                                      },
+                                      controller: titleController,
+                                      style: TextStyle(
+                                        color: SecondaryColor,
+                                      ),
+                                      decoration: InputDecoration(
+                                        hintText: "Title",
+                                        hintStyle: TextStyle(
+                                          color: SecondaryColor,
+                                          fontSize: 15,
+                                          fontFamily: "Poppins",
+                                        ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                            color: SecondaryColor,
+                                            width: 2,
+                                          ),
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(8.0)),
+                                        ),
+                                        enabledBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                            color: SecondaryColor,
+                                            width: 1.5,
+                                          ),
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(8.0)),
+                                        ),
+                                        labelStyle: TextStyle(
+                                          color: SecondaryColor,
+                                        ),
+                                      ),
+                                      showCursor: true,
+                                      cursorColor: SecondaryColor,
+                                      maxLines: 1,
+                                    ),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    TextFormField(
+                                      onChanged: (value) {
+                                        desc=value;
+                                      },
+                                      controller: descController,
+                                      style: TextStyle(
+                                        color: SecondaryColor,
+                                      ),
+                                      decoration: InputDecoration(
+                                        hintText: "Description",
+                                        hintStyle: TextStyle(
+                                          color: SecondaryColor,
+                                          fontSize: 15,
+                                          fontFamily: "Poppins",
+                                        ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                            color: SecondaryColor,
+                                            width: 2,
+                                          ),
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(8.0)),
+                                        ),
+                                        enabledBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                            color: SecondaryColor,
+                                            width: 1.5,
+                                          ),
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(8.0)),
+                                        ),
+                                        labelStyle: TextStyle(
+                                          color: SecondaryColor,
+                                        ),
+                                      ),
+                                      showCursor: true,
+                                      cursorColor: SecondaryColor,
+                                      maxLines: 10,
+                                    ),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    TextFormField(
+                                      onChanged: (value) {
+                                        price=value;
+                                      },
+                                      controller: priceController,
+                                      style: TextStyle(
+                                        color: SecondaryColor,
+                                      ),
+                                      decoration: InputDecoration(
+                                        hintText: "Price",
+                                        hintStyle: TextStyle(
+                                          color: SecondaryColor,
+                                          fontSize: 15,
+                                          fontFamily: "Poppins",
+                                        ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                            color: SecondaryColor,
+                                            width: 2,
+                                          ),
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(8.0)),
+                                        ),
+                                        enabledBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                            color: SecondaryColor,
+                                            width: 1.5,
+                                          ),
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(8.0)),
+                                        ),
+                                        labelStyle: TextStyle(
+                                          color: SecondaryColor,
+                                        ),
+                                      ),
+                                      showCursor: true,
+                                      cursorColor: SecondaryColor,
+                                      maxLines: 1,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(
+                                height: 7,
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  SizedBox(
+                                    width: 5,
+                                  ),
+                                  GestureDetector(
+                                    onTap: () async {
+                                      try{
+                                        await FirebaseFirestore.instance
+                                            .collection('Guide_Services').add({
+                                          "UserID":MyAccount.uId,
+                                          "description": desc,
+                                          "price":price,
+                                          "time":DateTime.now().toString(),
+                                          "title":title,
+                                        });
+                                        titleController.clear();
+                                        priceController.clear();
+                                        descController.clear();
+                                        Navigator.pop(context);
+                                      }catch(e){
+                                        showSnackBar(context, "There are error in adding new service");
+                                      }
+                                    },
+                                    child: Container(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 16, vertical: 10),
+                                      margin: EdgeInsets.all(8),
+                                      decoration: BoxDecoration(
+                                        color: SecondaryColor,
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      child: Text(
+                                        "Save",
+                                        style: TextStyle(
+                                          color: GreenColor,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 5,
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    });
+              },
+              child: Icon(
+                Icons.add,
+                size: 35,
+                color: MainColor,
+              ),
+            )
+          : null,
     );
   }
 }

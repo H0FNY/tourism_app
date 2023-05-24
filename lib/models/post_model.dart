@@ -6,7 +6,7 @@ class PostDataModel {
     required this.description,
     required this.time,
     required this.price,
-    required this.UserID
+    required this.UserID,
   });
 
   late String title;

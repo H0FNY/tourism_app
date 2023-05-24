@@ -14,6 +14,7 @@ Widget TextForm({
   Icon? prefxicon,
   IconButton? sufficon,
   String? hinttext,
+  String? initial,
 }) =>
     TextFormField(
       onChanged: onchange,
@@ -22,6 +23,7 @@ Widget TextForm({
       obscureText: hide,
       cursorColor:MainColor,
       style: TextStyle(color: MainColor),
+      initialValue: initial,
       decoration: InputDecoration(
         hintText: hinttext,
         hintStyle: TextStyle(
@@ -95,7 +97,7 @@ void showSnackBar(BuildContext context, String messege) {
   );
 }
 
-Widget ChatBuble(MessageDataModel message) => Align(
+Widget ChatBuble(Message message) => Align(
   alignment: Alignment.centerLeft,
   child: Container(
     margin: const EdgeInsets.only(left: 18, right: 18, top: 15),
@@ -109,7 +111,7 @@ Widget ChatBuble(MessageDataModel message) => Align(
           bottomRight: Radius.circular(20),
         )),
     child: Text(
-      message.message,
+      message.text,
       style: TextStyle(
         color: Colors.white,
         fontSize: 16,
@@ -118,7 +120,7 @@ Widget ChatBuble(MessageDataModel message) => Align(
   ),
 );
 
-Widget ChatBubleforfriend(MessageDataModel message) => Align(
+Widget ChatBubleforfriend(Message message) => Align(
   alignment: Alignment.centerRight,
   child: Container(
     margin: const EdgeInsets.only(left: 18, right: 18, top: 15),
@@ -132,7 +134,7 @@ Widget ChatBubleforfriend(MessageDataModel message) => Align(
           bottomLeft: Radius.circular(20),
         )),
     child: Text(
-      message.message,
+      message.text,
       style: TextStyle(
         color: Colors.white,
         fontSize: 16,

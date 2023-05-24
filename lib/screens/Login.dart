@@ -14,20 +14,27 @@ import 'package:tourism/shared/shared.dart';
 import '../models/user_model.dart';
 import 'Tnavigation_bar.dart';
 
-class Login extends StatelessWidget {
+class Login extends StatefulWidget {
   static String id = "Login";
-  bool hide = true;
+
+  @override
+  State<Login> createState() => _LoginState();
+}
+
+class _LoginState extends State<Login> {
+
+
   double width = 0, height = 0;
+
   String email = "", password = "";
+
   final emailController = TextEditingController();
 
   final passwordController = TextEditingController();
 
   final formKey = GlobalKey<FormState>();
 
-  final emailValid = RegExp(
-      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
-
+  bool hide1 = true;
   @override
   Widget build(BuildContext context) {
     width = MediaQuery.of(context).size.width;
@@ -78,16 +85,17 @@ class Login extends StatelessWidget {
                   ],
                 ),
                 SizedBox(
-                  height: height / 12,
+                  height: height / 15,
                 ),
                 TextForm(
                   prefxicon: Icon(Icons.person),
-                  hinttext: 'Username',
+                  hinttext: 'Email',
                   validator: (value) {
-                    if (value!.isEmpty)
-                      return "please enter your Email";
-                    else if (emailValid.hasMatch(emailController.toString()))
-                      return "Enter valid Email";
+                    return RegExp(
+                        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                        .hasMatch(value!)
+                        ? null
+                        : "Please enter a valid email";
                   },
                   controller: emailController,
                   onchange: (value) {
@@ -98,18 +106,29 @@ class Login extends StatelessWidget {
                   height: height / 20,
                 ),
                 TextForm(
+                  sufficon: IconButton(
+                    onPressed: () {
+                      hide1=!hide1;
+                      setState(() {});
+                    },
+                    icon: hide1 ? Icon(
+                      Icons.visibility,
+                      color: MainColor,
+                    ): Icon(
+                      Icons.visibility_off,
+                      color: MainColor,
+                    ),
+                  ),
+                  hide: hide1,
                   controller: passwordController,
                   validator: (value) {
                     if (value!.isEmpty)
                       return "Please enter strong password";
-                    else if (emailValid.hasMatch(emailController.toString()))
-                      return "Enter valid Password";
                   },
                   onchange: (value) {
                     password = value;
                   },
                   prefxicon: Icon(Icons.password),
-                  hide: true,
                   hinttext: 'Password',
                 ),
                 Padding(
