@@ -7,3 +7,4 @@ String ImageUrl="https://www.pngitem.com/pimgs/m/30-307416_profile-icon-png-imag
 
 List<dynamic> postsList = [];
 List<dynamic> myServices=[];
+List<dynamic> myProposal=[];

@@ -1,7 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:tourism/Constants/constants.dart';
 import 'package:tourism/animation.dart';
+import 'package:tourism/screens/new_Proposal.dart';
+
+import '../shared/shared.dart';
 
 class Details extends StatelessWidget {
   late String title;
@@ -158,7 +162,6 @@ class Details extends StatelessWidget {
                             ),
                           ],
                         ),
-
                       ],
                     ),
                   ),
@@ -199,7 +202,25 @@ class Details extends StatelessWidget {
                         ),
                         Expanded(
                           child: GestureDetector(
-                            onTap: () {},
+                            onTap: ()  {
+                              Navigator.pushNamed(context, NewProposal.id);
+                              // try{
+                              //   await FirebaseFirestore.instance
+                              //       .collection('Guide_Services').add({
+                              //     "UserID":MyAccount.uId,
+                              //     "description": desc,
+                              //     "price":price,
+                              //     "time":DateTime.now().toString(),
+                              //     "title":title,
+                              //   });
+                              //   titleController.clear();
+                              //   priceController.clear();
+                              //   descController.clear();
+                              //   Navigator.pop(context);
+                              // }catch(e){
+                              //   showSnackBar(context, "There are error in adding new service");
+                              // }
+                            },
                             child: Container(
                               height: height / 15,
                               decoration: BoxDecoration(

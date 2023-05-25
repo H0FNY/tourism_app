@@ -1,9 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:tourism/Constants/constants.dart';
-import 'package:tourism/screens/Register.dart';
-import 'package:tourism/screens/details_screen.dart';
-
 import '../models/post_model.dart';
 import '../models/user_model.dart';
 import '../shared/shared.dart';

@@ -350,13 +350,10 @@
 //   }
 // }
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:tourism/Constants/constants.dart';
 import 'package:tourism/models/user_model.dart';
 import 'package:tourism/screens/details_screen.dart';
-
 import '../models/post_model.dart';
 import '../shared/shared.dart';
 
@@ -375,14 +372,13 @@ class _HomeState extends State<Home> {
   Future getdata() async {
     postsList=[];
     await FirebaseFirestore.instance
-        .collection('Guide_Services').orderBy('time',descending: true)
+        .collection('Guide_Services')
+        .orderBy('time',descending: true)
         .get()
         .then((value) {
       value.docs.forEach((element) {
-
-          postsList.add(
-              {
-                "id":element.id,
+          postsList.add({
+            "id":element.id,
           "post":PostDataModel.fromJson(element.data()),
         });
         // print(element.data());
@@ -587,7 +583,7 @@ class HomePost extends StatelessWidget {
                     ),
                   ],
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 3,
                 ),
                 Row(
@@ -681,7 +677,7 @@ class HomePost extends StatelessWidget {
                             ),
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 10,
                         )
                       ],

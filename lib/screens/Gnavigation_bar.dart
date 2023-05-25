@@ -8,7 +8,6 @@ import 'package:tourism/screens/chat_screen.dart';
 import 'package:tourism/screens/myservice_screen.dart';
 import 'package:tourism/screens/profile_screen.dart';
 import 'package:tourism/screens/proposal_screen.dart';
-import 'package:tourism/screens/test.dart';
 import 'package:tourism/shared/shared.dart';
 
 class GNavigationPage extends StatefulWidget {
@@ -33,14 +32,12 @@ class _GNavigationPageState extends State<GNavigationPage> {
     "My Service",
     "My Proposal",
     "Chat",
-    "Test",
   ];
   List pages = [
     Home(),
     MyScervices(),
     MyProposal(),
     Chat(),
-    Test(),
   ];
 
   @override
@@ -112,10 +109,6 @@ class _GNavigationPageState extends State<GNavigationPage> {
                 GButton(
                   icon: Icons.chat,
                   text: "Chat",
-                ),
-                GButton(
-                  icon: Icons.settings,
-                  text: "Settings",
                 ),
               ]),
         ),

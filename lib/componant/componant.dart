@@ -7,6 +7,7 @@ import '../models/message_model.dart';
 
 Widget TextForm({
   String? Function(String?)? validator,
+  Function()? ontap,
   TextEditingController? controller,
   void Function(String)? onchange,
   TextInputType Type = TextInputType.text,
@@ -17,6 +18,7 @@ Widget TextForm({
   String? initial,
 }) =>
     TextFormField(
+      onTap: ontap,
       onChanged: onchange,
       controller: controller,
       keyboardType: Type,
@@ -111,7 +113,7 @@ Widget ChatBuble(Message message) => Align(
           bottomRight: Radius.circular(20),
         )),
     child: Text(
-      message.text,
+      message.message,
       style: TextStyle(
         color: Colors.white,
         fontSize: 16,
@@ -134,7 +136,7 @@ Widget ChatBubleforfriend(Message message) => Align(
           bottomLeft: Radius.circular(20),
         )),
     child: Text(
-      message.text,
+      message.message,
       style: TextStyle(
         color: Colors.white,
         fontSize: 16,

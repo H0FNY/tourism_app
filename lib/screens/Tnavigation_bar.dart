@@ -1,20 +1,12 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:tourism/Constants/constants.dart';
 import 'package:tourism/componant/componant.dart';
 import 'package:tourism/screens/Home_screen.dart';
 import 'package:tourism/screens/chat_screen.dart';
-import 'package:tourism/screens/myservice_screen.dart';
 import 'package:tourism/screens/profile_screen.dart';
 import 'package:tourism/screens/proposal_screen.dart';
-import 'package:tourism/screens/settings_screen.dart';
-import 'package:tourism/screens/test.dart';
 import 'package:tourism/shared/shared.dart';
-
-import '../models/post_model.dart';
-import '../models/user_model.dart';
 
 class TNavigationPage extends StatefulWidget {
   const TNavigationPage({Key? key}) : super(key: key);
@@ -38,7 +30,6 @@ class _TNavigationPageState extends State<TNavigationPage> {
     Home(),
     MyProposal(),
     Chat(),
-    Test(),
   ];
 
   @override
@@ -49,7 +40,7 @@ class _TNavigationPageState extends State<TNavigationPage> {
       backgroundColor: MainColor,
       appBar: AppBar(
         backgroundColor: SecondaryColor,
-        leadingWidth: 130,
+        leadingWidth: width*.5,
         leading: Center(
           child: Text(
             name[index],
@@ -85,7 +76,6 @@ class _TNavigationPageState extends State<TNavigationPage> {
           const EdgeInsets.symmetric(horizontal: 10.0, vertical: 12),
           child: GNav(
               onTabChange: (ind) {
-
                 setState(() {
                   index = ind;
                 });
@@ -102,16 +92,12 @@ class _TNavigationPageState extends State<TNavigationPage> {
                   text: "Home",
                 ),
                 GButton(
-                  icon: Icons.person,
-                  text: "My services",
+                  icon: Icons.menu,
+                  text: "My Proposal",
                 ),
                 GButton(
                   icon: Icons.chat,
                   text: "Chat",
-                ),
-                GButton(
-                  icon: Icons.settings,
-                  text: "Settings",
                 ),
               ]),
         ),

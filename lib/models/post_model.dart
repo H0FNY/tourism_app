@@ -1,5 +1,3 @@
-import 'package:tourism/models/user_model.dart';
-
 class PostDataModel {
   PostDataModel({
     required this.title,
